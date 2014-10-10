@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ScieLogic</title>
+	<link rel="stylesheet" href="themes/mobiletheme.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="js/jquery.mobile.structure-1.4.3.min.css" />
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script type="text/javascript" src="js/jquery_validate.js"></script>
+	
+	<style>	
+#relative {
+    position: relative;
+    top: -30px;
+	color:white;
+}
+
+#bg{
+	position:fixed;
+	height:100%;
+	width:100%;
+	background-image:url(css/bg.png);
+	background-position: top center;
+	background-size: cover;
+}
+
+#result {
+	background-color: pink;
+}
+	</style>
+</head>
+<body>
+	<div data-role="page" data-theme="a" id="index">
+		<img id="bg" />
+		
+		<div data-role="header" data-theme="c">
+		<center><img src="css/banner.png" width='80%' height='20%'></center>
+		</div>
+		<div data-role="content" data-theme="a">
+			
+			<div id="relative"><br />
+			<center><img src="css/icon1.png" width='100%' height='100%'></center>
+			<form id="hideme"  action="javascript:verifyfirst()">
+			<input type="text"  name="username" id="username"  placeholder="Username" style="font-size:30px;  font-family: 'Century Gothic'; border: 5px solid #317ab3; background-color:#ebeff9;" required />
+			<input type="password" name="pass" id="lpass" placeholder="Password" style="font-size:30px; font-family: 'Century Gothic';border: 5px solid #317ab3; background-color:#ebeff9;" required />
+			<button name="submit" style="font-size:30px; font-family: 'Arial Black'; border: 5px solid #317ab3; background-color:#329aeb;" >SIGN IN</button>
+			</form>
+
+			<div id="result"></div>
+			<h1 id="res"></h1>
+			<div style="display:none;" id="toggle" style="background-color:#317ab3;">
+			<div class="">
+			<form id="signupform" action="javascript:registeruser();" >
+                        <input type="text" class="form-control" name="fullname" id="fullname" maxlength="150" style="font-size:30px; border: 5px solid #317ab3; background-color:#ebeff9; font-family: 'Century Gothic';" required placeholder="FullName">
+                       <!-- <small id="errorfullname" style="color:#ff0000; font-family: 'Century Gothic';display:block"></small> -->
+                        <input type="email"  class="form-control" name="email" id="email" maxlength="50" style="font-size:30px; border: 5px solid #317ab3; background-color:#ebeff9; font-family: 'Century Gothic'" required placeholder="Email">
+                        <!--<small id="erroremail" style="color:#ff0000;  font-family: 'Century Gothic';display:block"></small>-->
+                        <!-- <small style="color:#ffffff"></small> -->
+                        <input type="text" class="form-control" name="username" id="username" required maxlength="15" style="font-size:30px; border: 5px solid #317ab3; background-color:#ebeff9; font-family: 'Century Gothic'" placeholder="UserName">
+                        <!-- <small id="errorusername" style="color:#ff0000; font-family: 'Century Gothic';display:block"></small> -->
+                       <!-- <small style="color:#ffffff"></small> -->
+                        <input type="password" class="form-control" name="pass" id="pass" maxlength="15" required style="font-size:30px; border: 5px solid #317ab3; background-color:#ebeff9; font-family: 'Century Gothic'" placeholder="Password">
+                        <!--<small id="errorpass" style="color:#ff0000; font-family: 'Century Gothic';display:block"></small> -->
+                        <input type="password" class="form-control" name="cpass" id="cpass" maxlength="15" required style="font-size:30px; border: 5px solid #317ab3; background-color:#ebeff9; font-family: 'Century Gothic'" placeholder="Confirm Password">
+                       <!-- <small id="errorcpass" style="color:#ff0000; font-family: 'Century Gothic';display:block"></small> -->
+					   
+					   <button  id="btnsubmit" form="signupform" style="font-size:30px; font-family: 'Arial Black'; border: 5px solid #317ab3; background-color:#329aeb;">Submit</button>
+</form>
+</div>
+		</div>
+		
+		<button id="hideReg" style="border: 5px solid #317ab3; background-color:#329aeb;"><small id="change" style="font-size:30px; font-family: 'Arial Black'"> SIGN UP</small></button>
+		<button id="hideReg2" style="display:none; border: 5px solid #317ab3; background-color:#329aeb;"><small id="change" style="font-size:30px; font-family: 'Arial Black'">BACK</small></button>
+		</div>
+		</div>
+		</div>
+	<script>
+	
+	 //Switches from Login to Registration
+     $("#hideReg").click(function(){
+	 $(this).hide();
+					$.mobile.loading('show');
+					$("#hideme").fadeIn();
+						$("#toggle").fadeIn(function(){
+								$.mobile.loading('hide');
+						});
+						$("#hideReg2").show();
+     });
+	 
+	 $("#hideReg2").click(function(){
+	 $(this).hide();
+					$.mobile.loading('show');
+					$("#hideme").fadeIn();
+						$("#toggle").fadeOut(function(){
+								$.mobile.loading('hide');
+						});
+						$("#hideReg").show();
+     });
+					$("#hideReg1").click(function(){
+							$.mobile.loading('show');
+							location.href="index.html";
+							$.mobile.loading('hide');
+     });
+	
+	var form = $("#signupform");
+        
+function registeruser()
+         		{
+         				$.getJSON("http://scielogicapp.esy.es/uregister.php?callback=?", form.serialize(),function(data)
+         				{
+							location.href="#index";
+							location.reload();
+							alert("Success!");
+         				}).fail(function(data){
+         				alert("failed");
+         				});
+         				
+         		}
+         var lform = $("#hideme");
+         		function verifyfirst(){
+         		if($( "#lusername" ).val() == "" || $( "#lpass" ).val() == "")
+         		{
+         		return;
+         		}
+         			$.getJSON("http://scielogicapp.esy.es/verifyfirst.php?callback=?", lform.serialize(),function(data)
+         			{
+         				if (data.verified == "v1")
+         				{
+         				localStorage.setItem("datauser", data.username);
+         				location.href="home.html";
+         				}
+         				else
+         				{
+         				alert("Your account does not exist.")
+         				}
+         			}).fail(function(data){
+         				alert("Failed to log in. Please try again.");
+         			});
+         		}
+
+setTimeout(function(){
+         if(localStorage.getItem("datauser") === null || localStorage.getItem("datauser") == "") //checks if theres an account logged-in
+         	{
+         	//do nothing
+         	}
+         else
+         	{
+         	location.href="home.html";
+         	}
+         },1000);
+
+</script>
+
+
+</body>
+</html>
